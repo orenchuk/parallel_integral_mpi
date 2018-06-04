@@ -120,7 +120,7 @@ void integrate(func_T myfunc, const Parameters& params, double& result) {
     result = res;
 }
 
-int main(int argc, const char * argv[]) {
+int main(int argc, char * argv[]) {
     Parameters params;
     string filename("conf.txt");
     auto conf = read_config(filename, params);
@@ -165,7 +165,7 @@ int main(int argc, const char * argv[]) {
         params.initial_steps *= 2;
         
         MPI_Barrier(MPI_COMM_WORLD);
-        MPI_Gather(&res, 1, MPI_DOUBLE, from_to, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+        MPI_Gather(&result, 1, MPI_DOUBLE, from_to, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
         
         for (size_t i = 0; i < commsize; ++i)
         {
@@ -174,7 +174,7 @@ int main(int argc, const char * argv[]) {
         
         MPI_Finalize();
         auto stop = get_current_time_fenced();
-        cout << "time: " << to_us(total) << "ms" << endl;
+        cout << "time: " << to_us(stop-start) << "ms" << endl;
     } while ((error_abs > params.abs_err) && (error_rel > params.rel_err));
     
     

@@ -1,0 +1,8 @@
+all: make
+
+make: main.cpp
+	sudo mpic++ main.cpp -o integrall -std=c++14
+.PHONY: clean
+
+clean: 
+	rm integrall
